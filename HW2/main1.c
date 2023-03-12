@@ -39,7 +39,7 @@ int main()
     
     printf(" Welcome! How many set of lotto to buy?\n");
     scanf("%d",&n);
-    printf("Your numbers will create in lotto.txt.");
+    printf("Create the number into lotto.txt.");
     
     while(i<n){
         int a[7] = {-1,-1,-1,-1,-1,-1} ;
