@@ -1,32 +1,96 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
-typedef struct employee {
-    int em_id;
-    char em_name[10];
-    int em_age;
-    char em_phone[12];
-    float em_salary;
-} employee_t;
+int chick_list(int num, int list[6]){
+    for (int i =0;i<5;i++){
+        if (num == list[i])
+            return 0;
+    }
 
-void employee_info (employee_t my_emp){
-    printf("em_id = %d\n",my_emp.em_id);
-    printf("em_name = %s\n",my_emp.em_name);
-    printf("em_age = %d\n",my_emp.em_age);
-    printf("em_name = %s\n",my_emp.em_phone);
-    printf("em_name = %f\n",my_emp.em_salary);
+    return 1 ;
 }
+
+void swap_list(int list[6]){
+    for (int i = 0; i < 6; ++i) {
+    for (int j = 0; j < i; ++j) {
+      if (list[j] > list[i]) {
+        int temp = list[j];
+        list[j] = list[i];
+        list[i] = temp;
+        }
+    }}
+}
+
+typedef struct {
+    int receipt_id;
+    int receipt_price;
+    char receipt_time[32];
+    int lotto_set[5][7];
+} lotto_record_t;
 
 int main()
 {
-   struct employee my_emp;
-   my_emp.em_id = 22;
-   strcpy(my_emp.em_name,"IU Lee");
-   my_emp.em_age = 18;
-   strcpy(my_emp.em_phone,"0937123456");
-   
-   my_emp.em_salary = 1000.30;
-   printf("struct size = %d\n",(int)sizeof(employee_t));
-   employee_info(my_emp);
-   return 0;
+    lotto_record_t lotto; // create struct var called with "lotto"
+    time_t now; // time function setting
+    time(&now);
+    FILE* fp,* fp2_w; // file io setting
+    int n ,j=0 ,i=0 , type, num;
+    int a[7] = {-1,-1,-1,-1,-1,-1} ;
+    char o;
+    char a1[] = "========Lucky lotto========\n";
+    srand((unsigned) time(NULL));
+    fp = fopen("lotto.txt","wb+");
+    fp2_w = fopen("record.bin","wb");
+    fwrite(a1,sizeof(a1)-1,1,fp);
+    fwrite(ctime(&now),25,1,fp);
+    
+    printf(" Welcome! How many set of lotto to buy?\n");
+    scanf("%d",&n);
+    printf("Create the number into lotto.txt.");
+    
+    lotto.receipt_id = 1;
+    lotto.receipt_price = n*100;
+    strcpy(lotto.receipt_time, ctime(&now));
+    fprintf(fp2_w,"%d ",lotto.receipt_id);
+    fprintf(fp2_w,"%d ",lotto.receipt_price);
+    fprintf(fp2_w,"%s#",lotto.receipt_time);
+    
+    while(i<n){
+        int a[7] = {-1,-1,-1,-1,-1,-1} ;
+        j=0;
+    while(j<6){
+        num = rand()%69+1;
+        type = chick_list(num,a);
+    
+        if (type){
+           a[j] = num;
+           j++;
+        }
+         
+    }
+    swap_list(a);
+    while (1){
+    num = rand()%10+1;
+    type = chick_list(num,a);
+    if (type){
+        a[j] = num;
+        break;
+    } 
+    }
+    fprintf(fp,"[%d]:",i+1);
+    for (int i = 0; i < 7; i++) {
+        fprintf(fp, "%02d ", a[i]);
+    }
+    fwrite("\n",1,1,fp);
+
+    i++;
+    }
+    fwrite("===========================",27,1,fp);
+    fseek(fp,0,SEEK_SET);
+    fclose(fp);
+    
+    
+    return 0;
 }
