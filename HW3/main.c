@@ -3,6 +3,7 @@
 #include <time.h>
 #include <string.h>
 #include<ctype.h>
+
 typedef struct lotto_record {
     int receipt_id;
     int receipt_price;
@@ -23,19 +24,10 @@ int check_exist(int record_num){
     return serial_number;
 }
 
-/*lotto_record_t copy(lotto_record_t lotto_, int serial_number){
-    FILE *ptr = fopen("record.bin", "r+");
-    lotto_record_t tmp;
-    for(int i = 0;i<serial_number;i++){
-        tmp[i].
-    }
-}*/
-
 lotto_record_t buy_lotto(int num, int serial_number){
     srand(time(NULL));
 	int tm, same = 0, lotto[5][7], tmp[6];
 	lotto_record_t lotto_r;
-	//printf("已為您購買 %d 組樂透組合輸出至 lotto.txt", num);
 	
 	char file_name[23];
 	printf("%d\n", serial_number);
@@ -186,7 +178,7 @@ void redemption(){
         }
     }
     if(any == 0)
-        printf("\n很遺憾您並未中獎 T_T");
+        printf("\n很遺憾您並未中獎");
     fclose(ptr);
 
 }
